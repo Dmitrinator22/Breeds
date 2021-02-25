@@ -62,10 +62,10 @@ class MainActivity : AppCompatActivity() {
     fun startPage(){
         setContentView(R.layout.activity_main)
 
-
         var listView = findViewById<ListView>(R.id.listview)
         var list = mutableListOf<Dog>()
 
+        var nr:Int
         list.add(Dog("Labrador", R.drawable.labrador))
         list.add(Dog("Dobermann", R.drawable.dobermann))
         list.add(Dog("Pitbull", R.drawable.pitbull))
@@ -73,12 +73,10 @@ class MainActivity : AppCompatActivity() {
         listView.adapter = Adapter(this, R.layout.raw, list)
 
         listView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
-            val pos:Int = position;
 
-
-
-            Log.e("position", "Position: "+pos);
-            newInfo(pos);
+            val breed = getName(position, list)
+            Log.e("position", "Position: "+position + ", Breed: "+breed);
+            newInfo(position);
 
             val exit:Button = findViewById(R.id.backbutton)
             exit.setOnClickListener(View.OnClickListener {
@@ -89,6 +87,15 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
+
+    }
+
+    fun getName(id:Int, list: List<Dog>):String{
+
+        Log.e("GetName()",list.get(id).breed)
+
+        return list.get(id).breed
     }
 
 }
