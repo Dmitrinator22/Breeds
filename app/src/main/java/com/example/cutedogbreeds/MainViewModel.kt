@@ -3,6 +3,7 @@ package com.example.cutedogbreeds
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cutedogbreeds.model.AllBreeds
 import com.example.cutedogbreeds.model.ListBreed
 import com.example.cutedogbreeds.model.Post
 import com.example.cutedogbreeds.repository.Repository
@@ -12,6 +13,7 @@ class MainViewModel(private val repository: Repository) : ViewModel(){
 
     val myResponse: MutableLiveData<Post> = MutableLiveData()
     val myListResponse: MutableLiveData<ListBreed> = MutableLiveData()
+    val myBreedsResponse: MutableLiveData<AllBreeds> = MutableLiveData()
 
     fun getPost(){
         viewModelScope.launch{
@@ -24,6 +26,14 @@ class MainViewModel(private val repository: Repository) : ViewModel(){
         viewModelScope.launch {
             val response = repository.getListBreed()
             myListResponse.value = response
+        }
+    }
+
+    fun getAllBreeds(){
+        viewModelScope.launch {
+            val response = repository.getAllBreeds()
+            myBreedsResponse.value = response
+
         }
     }
 
