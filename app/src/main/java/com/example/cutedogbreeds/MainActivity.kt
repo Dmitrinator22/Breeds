@@ -34,6 +34,15 @@ import com.example.cutedogbreeds.repository.Repository
     }
 
 
+     fun listAll(list: List<String>){
+
+         for(element in list){
+             Log.e("Element", element)
+
+         }
+
+     }
+
 
      private fun getAllBreeds(){
 
@@ -42,6 +51,7 @@ import com.example.cutedogbreeds.repository.Repository
         viewModel.myBreedsResponse.observe(this, Observer { response->
             Log.e("Sms", response.message.toString())
 
+            listAll(response.message)
 
             //val breeds: List<String>
 
