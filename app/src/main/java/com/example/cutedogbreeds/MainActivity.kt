@@ -1,6 +1,5 @@
 package com.example.cutedogbreeds
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,34 +7,47 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.cutedogbreeds.model.ListBreed
 import com.example.cutedogbreeds.repository.Repository
-import com.squareup.picasso.Picasso
 
-class MainActivity : AppCompatActivity() {
+abstract class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initRepository()
-        startPage()
+        setContentView(R.layout.activity_main)
 
+        val thread = SimpleThread()
+        thread.start()
 
-        getListofBreed()
-        getAllBreeds()
+        //startPage()
+
+        //initRepository()
+        //getListofBreed()
+        //getAllBreeds()
 
     }
 
-    fun getAllBreeds(){
+    /*
+
+    public fun getAllBreeds(){
 
         viewModel.getAllBreeds()
 
         viewModel.myBreedsResponse.observe(this, Observer { response->
-            Log.e("Response", response.message.toString())
+            Log.e("Sms", response.message.toString())
+
+            val breeds: String
+
+            //breeds = response.message.joinToString("*")
+
+            //Log.e("SMS", breeds)
+
             //Log.e("Response", response.status)
             // Picasso.get().load(response.message[2]).into(imageview)
         })
@@ -43,14 +55,14 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    fun initRepository(){
+    public fun initRepository(){
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
     }
 
-    private fun getListofBreed() {
+    public fun getListofBreed() {
 
         viewModel.getListBreed()
 
@@ -61,10 +73,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
+    */
     fun newInfo(pos: Int) {
         setContentView(R.layout.info)
-        val text:TextView = findViewById(R.id.info)
+        val text: TextView = findViewById(R.id.info)
         val textToWrite: String
     }
 
@@ -86,11 +98,11 @@ class MainActivity : AppCompatActivity() {
             Log.e("position", "Position: "+position + ", Breed: "+breed);
             newInfo(position);
 
-            val exit:Button = findViewById(R.id.backbutton)
+            val exit: Button = findViewById(R.id.backbutton)
             exit.setOnClickListener(View.OnClickListener {
 
                 startPage()
-                getListofBreed()
+               // getListofBreed()
 
             })
 
@@ -107,5 +119,18 @@ class MainActivity : AppCompatActivity() {
         return list.get(id).breed
     }
 
+    class SimpleThread:Thread(){
+        public override fun run() {
+
+            Log.e("Hello", "Hi")
+
+        }
+
+
+
+    }
+
+
 
 }
+
