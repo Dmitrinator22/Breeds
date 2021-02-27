@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cutedogbreeds.repository.Repository
 
-abstract class MainActivity : AppCompatActivity() {
+ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
@@ -25,44 +25,46 @@ abstract class MainActivity : AppCompatActivity() {
         val thread = SimpleThread()
         thread.start()
 
-        //startPage()
+        startPage()
 
-        //initRepository()
-        //getListofBreed()
-        //getAllBreeds()
+        initRepository()
+        getListofBreed()
+        getAllBreeds()
 
     }
 
-    /*
 
-    public fun getAllBreeds(){
+
+     private fun getAllBreeds(){
 
         viewModel.getAllBreeds()
 
         viewModel.myBreedsResponse.observe(this, Observer { response->
             Log.e("Sms", response.message.toString())
 
-            val breeds: String
 
-            //breeds = response.message.joinToString("*")
+            //val breeds: List<String>
 
-            //Log.e("SMS", breeds)
+            //breeds = response.message.toList()
+
+            //Log.e("SMS", breeds.toString())
 
             //Log.e("Response", response.status)
             // Picasso.get().load(response.message[2]).into(imageview)
         })
+
     }
 
 
 
-    public fun initRepository(){
+     fun initRepository(){
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
     }
 
-    public fun getListofBreed() {
+     fun getListofBreed() {
 
         viewModel.getListBreed()
 
@@ -73,7 +75,7 @@ abstract class MainActivity : AppCompatActivity() {
         })
     }
 
-    */
+
     fun newInfo(pos: Int) {
         setContentView(R.layout.info)
         val text: TextView = findViewById(R.id.info)
@@ -102,7 +104,7 @@ abstract class MainActivity : AppCompatActivity() {
             exit.setOnClickListener(View.OnClickListener {
 
                 startPage()
-               // getListofBreed()
+                getListofBreed()
 
             })
 
