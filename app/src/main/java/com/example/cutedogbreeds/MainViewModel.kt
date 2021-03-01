@@ -14,6 +14,8 @@ class MainViewModel(private val repository: Repository) : ViewModel(){
     val myResponse: MutableLiveData<Post> = MutableLiveData()
     val myListResponse: MutableLiveData<ListBreed> = MutableLiveData()
     val myBreedsResponse: MutableLiveData<AllBreeds> = MutableLiveData()
+    val myBreedList: MutableLiveData<ListBreed> = MutableLiveData()
+
 
     fun getPost(){
         viewModelScope.launch{
@@ -36,5 +38,14 @@ class MainViewModel(private val repository: Repository) : ViewModel(){
 
         }
     }
+
+    fun getListofBreed(dog : String){
+        viewModelScope.launch {
+            val response = repository.getListofBreed(dog)
+            myBreedList.value = response
+
+        }
+    }
+
 
 }

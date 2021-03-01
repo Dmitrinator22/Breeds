@@ -22,16 +22,33 @@ import com.example.cutedogbreeds.repository.Repository
 
         setContentView(R.layout.activity_main)
 
-        val thread = SimpleThread()
-        thread.start()
-
-        startPage()
-
         initRepository()
         getListofBreed()
         getAllBreeds()
+        listByBreed("husky")
+
+        startPage()
+
+        val thread = SimpleThread()
+        thread.start()
+
+
+
+
+
 
     }
+
+     fun listByBreed(dog : String){
+         viewModel.getListofBreed(dog)
+
+         viewModel.myBreedList.observe(this, Observer { response->
+             Log.e("SMS breed of type: "+ dog, response.message.toString())
+
+         })
+
+     }
+
 
 
      fun listAll(list: List<String>){
@@ -66,7 +83,6 @@ import com.example.cutedogbreeds.repository.Repository
     }
 
 
-
      fun initRepository(){
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
@@ -86,7 +102,7 @@ import com.example.cutedogbreeds.repository.Repository
     }
 
 
-    fun newInfo(pos: Int) {
+    fun newInfo(breed: String) {
         setContentView(R.layout.info)
         val text: TextView = findViewById(R.id.info)
         val textToWrite: String
@@ -107,8 +123,9 @@ import com.example.cutedogbreeds.repository.Repository
         listView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
 
             val breed = getName(position, list)
+            listByBreed(breed.toLowerCase())
             Log.e("position", "Position: "+position + ", Breed: "+breed);
-            newInfo(position);
+            newInfo(breed);
 
             val exit: Button = findViewById(R.id.backbutton)
             exit.setOnClickListener(View.OnClickListener {

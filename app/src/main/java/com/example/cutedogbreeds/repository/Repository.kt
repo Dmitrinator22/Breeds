@@ -22,4 +22,8 @@ class Repository {
         return RetrofitInstance.api.getAllBreeds()
     }
 
+    suspend fun getListofBreed(dog: String):ListBreed{
+        return RetrofitInstance.api.getListofBreed(dog)
+    }
+
 }
