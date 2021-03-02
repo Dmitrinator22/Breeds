@@ -6,14 +6,13 @@
 
 
 
-        <TextView
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hallo! Here you will find some Info about the Dog when you have Networkconection"
-            android:textSize="30dp"
-            android:id="@+id/info"
+            android:layout_gravity="center"
+            android:id="@+id/imgV"
 
-            ></TextView>
+            />
 
         <Button
             android:id="@+id/backbutton"
@@ -24,6 +23,15 @@
             >
 
         </Button>
+
+        <Button
+            android:id="@+id/nextBreed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="next"
+            />
+
 
 
 

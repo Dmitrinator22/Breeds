@@ -5,36 +5,39 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cutedogbreeds.model.AllBreeds
 import com.example.cutedogbreeds.model.ListBreed
+import com.example.cutedogbreeds.model.ListofBreedLinks
 import com.example.cutedogbreeds.model.Post
 import com.example.cutedogbreeds.repository.Repository
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class MainViewModel(private val repository: Repository) : ViewModel(){
 
-    val myResponse: MutableLiveData<Post> = MutableLiveData()
-    val myListResponse: MutableLiveData<ListBreed> = MutableLiveData()
-    val myBreedsResponse: MutableLiveData<AllBreeds> = MutableLiveData()
-    val myBreedList: MutableLiveData<ListBreed> = MutableLiveData()
+    val myRandom: MutableLiveData<Response<Post>> = MutableLiveData()
+    val myBreed: MutableLiveData<Response<ListBreed>> = MutableLiveData()
+    val myBreedsAll: MutableLiveData<Response<AllBreeds>> = MutableLiveData()
+    val myWantedBreedList: MutableLiveData<Response<ListofBreedLinks>> = MutableLiveData()
 
 
     fun getPost(){
         viewModelScope.launch{
             val response = repository.getPost()
-            myResponse.value = response
+            myRandom.value = response
         }
     }
 
-    fun getListBreed(){
+    fun getBreed(){
         viewModelScope.launch {
-            val response = repository.getListBreed()
-            myListResponse.value = response
+            val response = repository.getBreed()
+            myBreed.value = response
         }
     }
 
     fun getAllBreeds(){
         viewModelScope.launch {
             val response = repository.getAllBreeds()
-            myBreedsResponse.value = response
+            myBreedsAll.value = response
 
         }
     }
@@ -42,7 +45,7 @@ class MainViewModel(private val repository: Repository) : ViewModel(){
     fun getListofBreed(dog : String){
         viewModelScope.launch {
             val response = repository.getListofBreed(dog)
-            myBreedList.value = response
+            myWantedBreedList.value = response
 
         }
     }

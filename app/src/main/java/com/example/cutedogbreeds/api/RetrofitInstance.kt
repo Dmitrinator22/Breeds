@@ -14,10 +14,12 @@ object RetrofitInstance {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+
     }
 
     val api: SimpleApi by lazy {
         retrofit.create(SimpleApi::class.java)
+
     }
 
 }

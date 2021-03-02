@@ -10,129 +10,191 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.cutedogbreeds.model.AllBreeds
 import com.example.cutedogbreeds.repository.Repository
 
  class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
+     private var listD = mutableListOf<String>()
 
-
+     //SMS kommt jedesmal + das alte vor und erste reihe ist immer vom erst gedrückten!!
+     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        initRepository()
-        getListofBreed()
-        getAllBreeds()
-        listByBreed("husky")
+        var listView = findViewById<ListView>(R.id.listview)
+        var list = mutableListOf<Breed>()
 
-        startPage()
+        val repository = Repository()
+        val viewModelFactory = MainViewModelFactory(repository)
+        val viewModel: MainViewModel
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
-        val thread = SimpleThread()
-        thread.start()
+        /*
+        list.add(Breed("Labrador"))
+        list.add(Breed("Doberman"))
+        list.add(Breed("Pitbull"))
+        list.add(Breed("Akita"))
+        list.add(Breed("Dingo"))
+        list.add(Breed("Poodle"))
+        list.add(Breed("Rottweiler"))
+        list.add(Breed("Springer"))
+        list.add(Breed("Waterdog"))
 
 
+        listView.adapter = BreedAdapter(this, R.layout.raw, list)
+
+        listView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
+
+
+        }
+        */
+
+
+        viewModel.getAllBreeds()
+
+        viewModel.myBreedsAll.observe(this, Observer { response ->
+
+            if(response.isSuccessful) {
+
+                Log.e("SMS r to String", response.body()?.message.toString())
+
+                for (element in response.body()?.message!!) {
+                    listD.add(element)
+                    list.add(Breed(element.first().toUpperCase() + element.drop(1)))
+                }
+
+            }else{
+                Log.e("SMS fail", response.errorBody().toString())
+            }
+
+        })
+
+        var button: Button = findViewById(R.id.show)
+
+        button.setOnClickListener(View.OnClickListener {
+
+            listView.adapter = BreedAdapter(this, R.layout.raw, list)
+
+            Log.e("ListD->", listD.toString())
+
+            listView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
+
+                Log.e("Breed ID", " "+ id)
+
+                viewModel.getListofBreed(listD[position].toLowerCase())
+
+                viewModel.myWantedBreedList.observe(this, Observer { response ->
+
+                    if(response.isSuccessful) {
+
+                        Log.e("SMS Successful", response.body()?.message.toString())
+
+                    }else{
+                        Log.e("SMS fail", response.errorBody().toString())
+                    }
+
+                })
+
+
+            }
+
+
+
+        })
 
 
 
 
     }
-
-     fun listByBreed(dog : String){
-         viewModel.getListofBreed(dog)
-
-         viewModel.myBreedList.observe(this, Observer { response->
-             Log.e("SMS breed of type: "+ dog, response.message.toString())
-
-         })
-
-     }
-
-
 
      fun listAll(list: List<String>){
 
          for(element in list){
              Log.e("Element", element)
 
+             //listByBreed(element)
+
          }
 
      }
 
 
-     private fun getAllBreeds(){
-
-        viewModel.getAllBreeds()
-
-        viewModel.myBreedsResponse.observe(this, Observer { response->
-            Log.e("Sms", response.message.toString())
-
-            listAll(response.message)
-
-            //val breeds: List<String>
-
-            //breeds = response.message.toList()
-
-            //Log.e("SMS", breeds.toString())
-
-            //Log.e("Response", response.status)
-            // Picasso.get().load(response.message[2]).into(imageview)
-        })
-
-    }
 
 
-     fun initRepository(){
-        val repository = Repository()
-        val viewModelFactory = MainViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
-    }
-
-     fun getListofBreed() {
-
-        viewModel.getListBreed()
-
-        viewModel.myListResponse.observe(this, Observer { response->
-            Log.e("Response", response.message[1])
-            //Log.e("Response", response.status)
-            // Picasso.get().load(response.message[2]).into(imageview)
-        })
-    }
-
-
-    fun newInfo(breed: String) {
-        setContentView(R.layout.info)
-        val text: TextView = findViewById(R.id.info)
-        val textToWrite: String
-    }
-
+/*
     fun startPage(){
         setContentView(R.layout.activity_main)
+
+
 
         var listView = findViewById<ListView>(R.id.listview)
         var list = mutableListOf<Dog>()
 
         list.add(Dog("Labrador", R.drawable.labrador))
-        list.add(Dog("Dobermann", R.drawable.dobermann))
+        list.add(Dog("Doberman", R.drawable.dobermann))
         list.add(Dog("Pitbull", R.drawable.pitbull))
+        list.add(Dog("Akita", R.drawable.labrador))
+        list.add(Dog("Dingo", R.drawable.dobermann))
+        list.add(Dog("Poodle", R.drawable.pitbull))
+        list.add(Dog("Rottweiler", R.drawable.labrador))
+        list.add(Dog("Springer", R.drawable.dobermann))
+        list.add(Dog("Waterdog", R.drawable.pitbull))
+
 
         listView.adapter = Adapter(this, R.layout.raw, list)
 
         listView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
 
-            val breed = getName(position, list)
-            listByBreed(breed.toLowerCase())
-            Log.e("position", "Position: "+position + ", Breed: "+breed);
-            newInfo(breed);
+
+
+
+
+                //val breed = getName(position, list)
+                //Log.e("position", "Position: "+position + ", Breed: "+breed);
+                //newInfo(breed);
+
+
+                //listByBreed(list.get(position).breed.toLowerCase())
+
+
+
+
+
+
+/*
+                for (index in 0..response.message.size-1){
+                    println("Link "+index+" :..."+response.message[index])
+                    listD.add(index,response.message[index])
+
+
+                }
+                println("****************")
+*/
+                //var breed = Breed(dog, response.message[0])
+                //listBreed.add(breed)
+                // to sow all separat
+                // listAll(response.message)
+
+
+
+
+
+            setContentView(R.layout.info)
+
 
             val exit: Button = findViewById(R.id.backbutton)
             exit.setOnClickListener(View.OnClickListener {
+                Log.e("SMS from Heaven", listD.toString())
+                //startPage()
 
-                startPage()
-                getListofBreed()
 
+                //getListofBreed()
+                //viewModel.myBreedList.removeObservers(this)
+                //viewModel.closeIt()
             })
 
         }
@@ -141,25 +203,17 @@ import com.example.cutedogbreeds.repository.Repository
 
     }
 
-    fun getName(id:Int, list: List<Dog>):String{
-
-        Log.e("GetName()",list.get(id).breed)
-
-        return list.get(id).breed
-    }
-
-    class SimpleThread:Thread(){
-        public override fun run() {
-
-            Log.e("Hello", "Hi")
-
-        }
+*/
 
 
 
-    }
+
 
 
 
 }
+
+
+
+
 
