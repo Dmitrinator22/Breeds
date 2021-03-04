@@ -8,6 +8,8 @@ import com.example.cutedogbreeds.model.ListBreed
 import com.example.cutedogbreeds.model.ListofBreedLinks
 import com.example.cutedogbreeds.model.Post
 import com.example.cutedogbreeds.repository.Repository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -42,7 +44,7 @@ class MainViewModel(private val repository: Repository) : ViewModel(){
         }
     }
 
-    fun getListofBreed(dog : String){
+    fun getListofBreed(dog : String) = GlobalScope.async{
         viewModelScope.launch {
             val response = repository.getListofBreed(dog)
             myWantedBreedList.value = response

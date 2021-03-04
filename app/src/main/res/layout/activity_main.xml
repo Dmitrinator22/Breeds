@@ -13,9 +13,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/show"
         android:text="Show"
-
+        android:onClick="showThem"
         />
-
 
 
     <ListView
