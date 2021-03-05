@@ -383,6 +383,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.setBreed("labrador")
         //viewModel.setBreed("pitbull")
 
+
         Log.e("Breed List", listBreeds.toString())
 
     }
