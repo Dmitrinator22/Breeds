@@ -18,10 +18,10 @@ interface SimpleApi {
     suspend fun getBreed(): Response<ListBreed>
 
     @GET("/api/breeds/list")
-    suspend fun getAllBreeds(): Response<AllBreeds>
+    suspend fun getAllBreeds(): AllBreeds
 
     @GET("/api/breed/{dog}/images")
-    suspend fun getListofBreed(@Path("dog") dog : String): Response<ListofBreedLinks>
+    suspend fun getListofBreed(@Path("dog") dog : String): ListofBreedLinks
 
 
 }

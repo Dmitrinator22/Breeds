@@ -9,8 +9,6 @@ import retrofit2.Response
 
 class Repository {
 
-
-
     suspend fun getPost(): Response<Post> {
 
         return RetrofitInstance.api.getPost()
@@ -21,7 +19,7 @@ class Repository {
         return  RetrofitInstance.api.getBreed()
 
     }
-
+/*
     suspend fun getAllBreeds():Response<AllBreeds>{
         return RetrofitInstance.api.getAllBreeds()
     }
@@ -29,5 +27,5 @@ class Repository {
     suspend fun getListofBreed(dog: String):Response<ListofBreedLinks>{
         return RetrofitInstance.api.getListofBreed(dog)
     }
-
+*/
 }

@@ -10,17 +10,27 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.cutedogbreeds.repository.Repository
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.*
 import kotlin.random.Random
-import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
 
-     private var listD = mutableListOf<String>()
-     private var listL = mutableListOf<String>()
-     //SMS kommt jedesmal + das alte vor und erste reihe ist immer vom erst gedrückten!!
+    private var listD = mutableListOf<String>()
+    private var listL = mutableListOf<String>()
+
+    private var listBreeds = mutableListOf<String>()
+    private val listLinks = mutableListOf<String>()
+
+    private var jobGetAll: CompletableJob? = null
+    private var jobLinks: CompletableJob? = null
+
+     //val repository = Repository()
+     //val viewModelFactory = MainViewModelFactory(repository)
+
+     lateinit var viewModel: MainViewModel
+
+    private var list = mutableListOf<Breed>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +64,61 @@ class MainActivity : AppCompatActivity() {
 
         }
         */
+        jobGetAll= Job()
+        jobLinks= Job()
+        startUp()
+        //setContentView(R.layout.activity_main)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val repository = Repository()
-        val viewModelFactory = MainViewModelFactory(repository)
-        val viewModel: MainViewModel
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel.setBreed("pitbull")
+        //viewModel.setBreed("labrador")
 
-        startUp(viewModel)
+        val listView = findViewById<ListView>(R.id.listview)
+
+        viewModel.listofall.observe(this, Observer { result->
+            Log.e("All Breeds", result.message.toString())
+                jobGetAll?.let {
+                    CoroutineScope(Dispatchers.IO+it).launch {
+                        for (element in result.message){
+                            listBreeds.add(element[0].toUpperCase()+element.drop(1))
+                        }
+                        withContext(Dispatchers.Main){
+                            showBreeds(listView)
+                        }
+
+                    }
+                }
+
+        })
+
+
+        viewModel.listofbreed.observe(this, Observer { result->
+            Log.e("Clicked Breed", result.message.toString())
+            listLinks.clear()
+            jobLinks?.let {
+                CoroutineScope(Dispatchers.IO+it).launch {
+                    for (element in result.message!!){
+                        listLinks.add(element)
+                    }
+                    Log.e("Breed Links", listLinks.toString())
+                }
+
+            }
+
+
+        })
+
+        listView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
+
+            Log.e("Pos", position.toString())
+            val breed:String = listBreeds[position].toLowerCase()
+            viewModel.setBreed(breed)
+
+        }
+
+
+
+        //listView.adapter = BreedAdapter(this, R.layout.raw, list)
 
         /*
         viewModel.getAllBreeds()
@@ -169,13 +227,24 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun startUp(viewModel: MainViewModel){
+    suspend fun showBreeds(listView: ListView){
+
+        //var listView = findViewById<ListView>(R.id.listview)
+
+        listView.adapter = BreedAdapter(this, R.layout.raw, listBreeds)
+
+    }
+
+    fun startUp(){
         setContentView(R.layout.activity_main)
+        //var listView = findViewById<ListView>(R.id.listview)
 
+
+        /*
         var listView = findViewById<ListView>(R.id.listview)
-        var list = mutableListOf<Breed>()
 
-        getAllBreeds(viewModel, list)
+
+        getAllBreeds()
 
 
         var button: Button = findViewById(R.id.show)
@@ -190,15 +259,18 @@ class MainActivity : AppCompatActivity() {
             listView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
                 listL.clear()
                 Log.e("Breed ID", " " + id)
-                getClickedBreed(viewModel, listD[position].toLowerCase())
+                getClickedBreed(listD[position].toLowerCase())
 
             }
 
         })
 
+         */
+
     }
 
-    fun getClickedBreed(viewModel: MainViewModel, breed : String){
+/*
+    fun getClickedBreed(breed : String){
 
         viewModel.getListofBreed(breed)
         viewModel.myWantedBreedList.observe(this, Observer { response ->
@@ -225,7 +297,7 @@ class MainActivity : AppCompatActivity() {
                     Log.e("ListL", listL.toString())
 
                 }
-                newLayout(listL, viewModel)
+                newLayout(listL)
             }else{
                 Log.e("Error Response", response.errorBody().toString())
             }
@@ -235,41 +307,53 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getAllBreeds(viewModel: MainViewModel, list: MutableList<Breed>) {
+ */
+/*
+    fun getAllBreeds() {
 
-        viewModel.getAllBreeds()
 
-        viewModel.myBreedsAll.observe(this, Observer { response ->
+        if(list.isEmpty()){
+            viewModel.getAllBreeds()
 
-            if(response.isSuccessful) {
-                GlobalScope.launch(Dispatchers.IO) {
-                    val time = measureTimeMillis {
+            viewModel.myBreedsAll.observe(this, Observer { response ->
 
-                        //Log.e("SMS r to String", response.body()?.message.toString())
-                        val job = launch {
-                            for (element in response.body()?.message!!) {
-                                listD.add(element)
-                                list.add(Breed(element.first().toUpperCase() + element.drop(1)))
+                if(response.isSuccessful) {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val time = measureTimeMillis {
+
+                            //Log.e("SMS r to String", response.body()?.message.toString())
+                            val job = launch {
+                                for (element in response.body()?.message!!) {
+                                    listD.add(element)
+                                    list.add(Breed(element.first().toUpperCase() + element.drop(1)))
+                                }
+
                             }
+                            job.join()
 
                         }
-                        job.join()
-
+                        Log.e("Time", "Requests $time ms")
                     }
-                    Log.e("Time", "Requests $time ms")
+
+
+                }else{
+                    Log.e("SMS fail", response.errorBody().toString())
                 }
 
+            })
+        }else{
+            Log.e("List:::", list.toString())
+        }
 
-            }else{
-                Log.e("SMS fail", response.errorBody().toString())
-            }
 
-        })
 
     }
 
 
-    fun newLayout(listL: MutableList<String>, viewModel: MainViewModel) {
+
+ */
+
+    fun newLayout(listL: MutableList<String>) {
 
         setContentView(R.layout.info)
 
@@ -283,7 +367,7 @@ class MainActivity : AppCompatActivity() {
 
         exit.setOnClickListener(View.OnClickListener {
 
-            startUp(viewModel)
+            startUp()
 
         })
 
@@ -296,11 +380,13 @@ class MainActivity : AppCompatActivity() {
 
     fun showThem(view: View) {
 
+        viewModel.setBreed("labrador")
+        //viewModel.setBreed("pitbull")
 
-
-
+        Log.e("Breed List", listBreeds.toString())
 
     }
+
 
 /*
     fun startPage(){
@@ -381,12 +467,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 */
-
-
-
-
-
-
 
 }
 
