@@ -3,51 +3,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_material_light"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    tools:context=".BreedActivity"
     >
-
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:gravity="center"
-            >
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:id="@+id/imgV"
-
-                    />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            >
-
-                <Button
-                    android:id="@+id/backbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="back"
-                    />
-
-                <Button
-                    android:id="@+id/nextBreed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="next"
-                    />
-        </LinearLayout>
-
-
-
-
-
-
+            android:id="@+id/imgV"
+            />
 </LinearLayout>

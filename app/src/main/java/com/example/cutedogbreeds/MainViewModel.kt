@@ -15,11 +15,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class MainViewModel() : ViewModel(){
-    //private val repository: Repository
-    val myRandom: MutableLiveData<Response<Post>> = MutableLiveData()
-    val myBreed: MutableLiveData<Response<ListBreed>> = MutableLiveData()
-    val myBreedsAll: MutableLiveData<Response<AllBreeds>> = MutableLiveData()
-    val myWantedBreedList: MutableLiveData<Response<ListofBreedLinks>> = MutableLiveData()
 
     private val breed: MutableLiveData<String> = MutableLiveData()
 
