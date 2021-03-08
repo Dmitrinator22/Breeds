@@ -6,9 +6,13 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.cutedogbreeds.viewmodels.BreedModelFactory
+import com.example.cutedogbreeds.viewmodels.BreedViewModel
+import com.example.cutedogbreeds.viewmodels.MainViewModel
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +20,9 @@ class MainActivity : AppCompatActivity() {
     private var listBreeds = mutableListOf<String>()
     private var job: CompletableJob? = null
     private lateinit var viewModel: MainViewModel
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +33,9 @@ class MainActivity : AppCompatActivity() {
 
         job= Job()
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+
+
 
         viewModel.listofall.observe(this, Observer { result->
             Log.e("All Breeds", result.message.toString())

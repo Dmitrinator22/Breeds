@@ -1,4 +1,4 @@
-package com.example.cutedogbreeds
+package com.example.cutedogbreeds.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.*
