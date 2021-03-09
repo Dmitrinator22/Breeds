@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(Breed::class), version = 1)
+@Database(entities = arrayOf(Breed::class), version = 1, exportSchema = false)
 abstract class BreedDatabase :RoomDatabase(){
 
     abstract fun breedDao(): BreedDao
@@ -19,7 +19,6 @@ abstract class BreedDatabase :RoomDatabase(){
         private var INSTANCE: BreedDatabase? = null
 
         fun getDatabase(
-
             context: Context,
             scope:CoroutineScope
 
@@ -35,10 +34,7 @@ abstract class BreedDatabase :RoomDatabase(){
 
                 instance
             }
-
         }
-
-
     }
 
     private class BreedDatabaseCallback(
@@ -58,7 +54,15 @@ abstract class BreedDatabase :RoomDatabase(){
 
         suspend fun populateDatabase(breedDao: BreedDao){
             //var list:List<String> = mutableListOf("D", "A", "E")
-            //breedDao.insert(Breed(0,"pitbull", "Hallo"))
+
+            //breedDao.deleteAll()
+
+            //breedDao.insert(Breed(0,"pitbull"))
+
+            /*
+            breedDao.insertLink(Link(0, "Hallo", "pitbull"))
+            breedDao.insertLink(Link(1, "HEHE", "pitbull"))
+             */
 
         }
 
