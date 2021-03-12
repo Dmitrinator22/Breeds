@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BreedDao {
 
-    @Query("SELECT * FROM breed_table")
+    @Query("SELECT * FROM breed_table ORDER BY breed ASC")
     fun getAll(): Flow<List<Breed>>
 
     @Query("SELECT * FROM breed_table WHERE breed LIKE :breed")

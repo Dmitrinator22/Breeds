@@ -48,21 +48,10 @@
             android:clickable="true"
             android:focusable="true"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/updateImg"
-            app:layout_constraintEnd_toEndOf="@+id/updateImg"
-            app:srcCompat="@drawable/ic_delete" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/updateImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/design_default_color_secondary"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/loadImg"
             app:layout_constraintEnd_toEndOf="@+id/loadImg"
+            app:srcCompat="@drawable/ic_delete" />
 
-            app:srcCompat="@drawable/ic_update" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

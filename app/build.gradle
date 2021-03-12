@@ -10,6 +10,12 @@ android {
     compileSdkVersion 29
     buildToolsVersion "30.0.3"
 
+    buildFeatures {
+        viewBinding true
+
+    }
+
+
     defaultConfig {
         applicationId "com.example.cutedogbreeds"
         minSdkVersion 21
@@ -55,7 +61,7 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
     //implementation 'com.squareup.okhttp3:okhttp:logging-interceptor:4.5.0'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
@@ -68,6 +74,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.10.0' //Glide
+
     kapt 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.r0adkll:slidableactivity:2.0.6'
@@ -82,5 +89,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
 
 
+    implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta02'
 
 }

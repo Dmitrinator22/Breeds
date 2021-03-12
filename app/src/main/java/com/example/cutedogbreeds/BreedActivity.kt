@@ -25,7 +25,7 @@ class BreedActivity :AppCompatActivity() {
 
     private lateinit var slider: SlidrInterface
     lateinit var viewModel: MainViewModel
-
+    private var job: CompletableJob? = null
     private val breedViewModel: BreedViewModel by viewModels {
         BreedModelFactory((application as BreedApplication).repository)
     }
@@ -34,15 +34,17 @@ class BreedActivity :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.info)
         val breed: String = intent.getStringExtra("breed")
-        var imageView : ImageView = findViewById(R.id.imgV)
+        Log.e("Breed", breed)
+        val imageView : ImageView = findViewById(R.id.imgV)
+        //val list: Array<String> = intent.getStringArrayExtra("list")
 
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
         if (isConnected){
+            Toast.makeText(this, "Say hi", Toast.LENGTH_SHORT).show()
             viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
             viewModel.setBreed(breed.toLowerCase())
             viewModel.listofbreed.observe(this, Observer { result->
                 CoroutineScope(Dispatchers.IO).launch {
@@ -54,12 +56,12 @@ class BreedActivity :AppCompatActivity() {
                 }
             })
         }else{
-            Toast.makeText(this, "Say hi", Toast.LENGTH_SHORT).show()
-            breedViewModel.getOneBreed(breed)
-            breedViewModel.myBreed.observe(this, Observer {result->
-                Picasso.get().load(result.links).into(imageView)
+                breedViewModel.getOneBreed(breed)
+                breedViewModel.myBreed.observe(this, Observer {result->
+                    Picasso.get().load(result.links).into(imageView)
+                    Toast.makeText(this, "Say hi", Toast.LENGTH_SHORT).show()
 
-            })
+                })
         }
 
         breedViewModel.allBreeds.observe(this, Observer {result->
@@ -76,12 +78,10 @@ class BreedActivity :AppCompatActivity() {
                 viewModel.setBreed(breed.toLowerCase())
                 viewModel.listofbreed.observe(this, Observer { result->
                     CoroutineScope(Dispatchers.IO).launch {
-
                         breedViewModel.insert(Breed(0,breed, result.message?.get(0).toString()))
-
                     }
-
                 })
+                Toast.makeText(this, "You now can see this good boy offline too", Toast.LENGTH_LONG).show()
             }else{
                 Toast.makeText(this, "You are Offline", Toast.LENGTH_SHORT).show()
             }
@@ -90,6 +90,7 @@ class BreedActivity :AppCompatActivity() {
         deleteImg.setOnClickListener {
             breedViewModel.deleteBreed(breed)
             Toast.makeText(this, "You will not see this cute boy offline anymore", Toast.LENGTH_LONG).show()
+
         }
 
     }
