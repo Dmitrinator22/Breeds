@@ -8,6 +8,7 @@
     tools:context=".BreedActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
+    android:id="@+id/info"
 
     >
 
@@ -16,7 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-
+            android:id="@+id/infoLinearLayout"
             tools:ignore="MissingConstraints">
                 <ImageView
                     android:layout_width="match_parent"
