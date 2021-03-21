@@ -30,11 +30,8 @@ class BreedDaoTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-
     private lateinit var database: BreedDatabase
     private lateinit var dao: BreedDao
-
-
 
     @Before
     fun setup(){
@@ -51,7 +48,7 @@ class BreedDaoTest {
     }
 
     @Test
-    fun insertBreed() = runBlockingTest {
+    fun insertBreed_and_getAll() = runBlockingTest {
 
         val dog = Breed(1, "breed", "at/home")
         dao.insert(dog)
@@ -60,7 +57,30 @@ class BreedDaoTest {
 
         assertThat(breeds).contains(dog)
 
+    }
+
+    @Test
+    fun getOne() = runBlockingTest {
+
+        val dog1 = Breed(1, "breed1", "at/home")
+        dao.insert(dog1)
+        val dog2 = Breed(2, "breed2", "at/home")
+        dao.insert(dog2)
+        val dog3 = Breed(3, "breed3", "at/home")
+        dao.insert(dog3)
+        val dog4 = Breed(4, "breed4", "at/home")
+        dao.insert(dog4)
+        val dog5 = Breed(5, "breed5", "at/home")
+        dao.insert(dog5)
+
+        val breed = dao.getOneBreed("breed3")
+        assertThat(breed).isEqualTo(dog3)
+
+
+
 
     }
+
+
 
 }
